@@ -1,6 +1,8 @@
 FROM ubuntu:14.04
 MAINTAINER Anders Pitman <tapitman11@gmail.com>
 
+WORKDIR /root
+
 
 # Install wget and build tools
 RUN apt-get -y update
@@ -14,18 +16,18 @@ RUN apt-get install -y \
 # Install node via nvm
 RUN wget https://nodejs.org/dist/v4.1.2/node-v4.1.2-linux-x64.tar.gz
 RUN tar -xzvf node-v4.1.2-linux-x64.tar.gz
-ENV PATH /node-v4.1.2-linux-x64/bin:$PATH
+ENV PATH /root/node-v4.1.2-linux-x64/bin:$PATH
 RUN npm install --global gulp
 RUN npm install --global mocha
 
 # Install mongo
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv BE0EB6AA24F3C978
 RUN echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 RUN apt-get -y update && apt-get install -y mongodb-org
 RUN mkdir -p /data/db
 
-RUN mkdir ~/tidepool
-WORKDIR ~/tidepool
+RUN mkdir /root/tidepool
+WORKDIR /root/tidepool
 
 # Get tidepool
 RUN git clone https://github.com/tidepool-org/tools
