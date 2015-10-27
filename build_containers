@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+build_container() {
+    USERNAME=${1}
+    CONTAINER_BUILD_DIR=${2}
+    CONTAINER_NAME=tidepool-${CONTAINER_BUILD_DIR}
+    BUILD_COMMAND="docker build -t ${USERNAME}/${CONTAINER_NAME} \
+        ${CONTAINER_BUILD_DIR}"
+    echo
+    echo "Running build command:"
+    echo ${BUILD_COMMAND}
+    echo
+    ${BUILD_COMMAND}
+}
+
+CONTAINER_NAMES="common node go gatekeeper seagull shoreline jellyfish"
+for container_name in ${CONTAINER_NAMES}; do
+    build_container anderspitman $container_name
+
+    if [ "$?" != "0" ]; then
+        break
+    fi
+done
