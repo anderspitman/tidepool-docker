@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+stop_container() {
+    CONTAINER_NAME=tidepool-${1}
+    STOP_COMMAND="docker rm -f ${CONTAINER_NAME}"
+    echo
+    echo "Running stop command:"
+    echo ${STOP_COMMAND}
+    echo
+    ${STOP_COMMAND}
+}
+
+BASE_DIR=${1}
+CREATOR_NAME=${2}
+
+#for container_name in $(cat "${BASE_DIR}/container_names.txt"); do
+CONTAINER_NAMES="mongo styx gatekeeper seagull shoreline jellyfish"
+for container_name in ${CONTAINER_NAMES}; do
+    stop_container $container_name ${CREATOR_NAME}
+
+    #if [ "$?" != "0" ]; then
+    #    break
+    #fi
+done

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 build_container() {
-    USERNAME=${1}
-    CONTAINER_BUILD_DIR=${2}
-    CONTAINER_NAME=tidepool-${CONTAINER_BUILD_DIR}
-    BUILD_COMMAND="docker build -t ${USERNAME}/${CONTAINER_NAME} \
-        ${CONTAINER_BUILD_DIR}"
+    BASE_DIR=${1}
+    CONTAINER_NAME=${2}
+    USERNAME=${3}
+    CONTAINER_BUILD_PATH=${BASE_DIR}/${CONTAINER_NAME}
+    BUILD_COMMAND="docker build -t ${USERNAME}/tidepool-${CONTAINER_NAME} \
+        ${CONTAINER_BUILD_PATH}"
     echo
     echo "Running build command:"
     echo ${BUILD_COMMAND}
@@ -12,9 +13,13 @@ build_container() {
     ${BUILD_COMMAND}
 }
 
-CONTAINER_NAMES="common node go gatekeeper seagull shoreline jellyfish"
+BASE_DIR=${1}
+USERNAME=${2}
+
+#for container_name in $(cat "${BASE_DIR}/container_names.txt"); do
+CONTAINER_NAMES="common node go styx gatekeeper seagull shoreline jellyfish"
 for container_name in ${CONTAINER_NAMES}; do
-    build_container anderspitman $container_name
+    build_container ${BASE_DIR} $container_name ${USERNAME}
 
     if [ "$?" != "0" ]; then
         break

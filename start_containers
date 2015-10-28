@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+start_container() {
+    CONTAINER_NAME=tidepool-${1}
+    CREATOR_NAME=${2}
+    START_COMMAND="docker run -d --name ${CONTAINER_NAME} ${CREATOR_NAME}/${CONTAINER_NAME}"
+    echo
+    echo "Running start command:"
+    echo ${START_COMMAND}
+    echo
+    ${START_COMMAND}
+}
+
+BASE_DIR=${1}
+CREATOR_NAME=${2}
+
+docker run -d --name tidepool-mongo -p 27017:27017 mongo
+# styx is a special case because of the exposed port
+docker run -d --name tidepool-styx -p 8009:8009 ${CREATOR_NAME}/tidepool-styx
+
+#for container_name in $(cat "${BASE_DIR}/container_names.txt"); do
+CONTAINER_NAMES="gatekeeper seagull shoreline jellyfish"
+for container_name in ${CONTAINER_NAMES}; do
+    start_container $container_name ${CREATOR_NAME}
+
+    if [ "$?" != "0" ]; then
+        break
+    fi
+done
