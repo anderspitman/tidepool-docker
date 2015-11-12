@@ -20,6 +20,7 @@ WORKDIR styx
 RUN npm install
 
 RUN sed -i -e 's/localhost:9107/tidepool-shoreline:9107/g' ../tools/styx_rules.json
+RUN sed -i -e 's/localhost:9120/tidepool-seagull:9120/g' ../tools/styx_rules.json
 RUN sed -i -e 's/localhost:9122/tidepool-jellyfish:9122/g' ../tools/styx_rules.json
 RUN sed -i -e 's/localhost:9123/tidepool-gatekeeper:9123/g' ../tools/styx_rules.json
 
